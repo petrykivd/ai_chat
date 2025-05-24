@@ -69,6 +69,13 @@ func main() {
 	messageRepo := messages.NewPostgresMessageRepository(db)
 	chatService := service.NewService(chatRepo, messageRepo, client)
 
+	// Health check endpoint
+	e.GET("/health", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, map[string]string{
+			"status": "ok",
+		})
+	})
+
 	// Create a new chat
 	e.POST("/chats", func(c echo.Context) error {
 		newChat, err := chatService.CreateChat(c.Request().Context())
