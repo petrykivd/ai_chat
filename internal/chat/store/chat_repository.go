@@ -10,4 +10,5 @@ type Repository interface {
 	CreateChat(ctx context.Context, chat pkg.Chat) (uuid.UUID, error)
 	GetChat(ctx context.Context, id uuid.UUID) (pkg.Chat, error)
 	ListChats(ctx context.Context) ([]pkg.Chat, error)
+	DeleteChat(ctx context.Context, id uuid.UUID) error
 }

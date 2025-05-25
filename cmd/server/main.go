@@ -118,6 +118,26 @@ func main() {
 		return c.JSON(http.StatusOK, messages)
 	})
 
+	e.DELETE("/chats/:chat_id", func(c echo.Context) error {
+		chatIDStr := c.Param("chat_id")
+		chatID, err := uuid.Parse(chatIDStr)
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, map[string]string{
+				"error": "Invalid chat ID format",
+			})
+		}
+
+		err = chatService.DeleteChat(c.Request().Context(), chatID)
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, map[string]string{
+				"error": err.Error(),
+			})
+		}
+
+		return c.JSON(http.StatusNoContent, nil)
+
+	})
+
 	// Send a new message in a specific chat - improved version
 	e.POST("/chats/:chat_id/new_message", func(c echo.Context) error {
 		chatIDStr := c.Param("chat_id")

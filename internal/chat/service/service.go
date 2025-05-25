@@ -21,6 +21,8 @@ type Service interface {
 	SendMessage(ctx context.Context, chatID uuid.UUID, content string) (llm.Message, error)
 
 	GetMessages(ctx context.Context, chatID uuid.UUID) ([]pkg.Message, error)
+
+	DeleteChat(ctx context.Context, id uuid.UUID) error
 }
 
 type ServiceImpl struct {
@@ -111,4 +113,8 @@ func (s *ServiceImpl) GetMessages(ctx context.Context, chatID uuid.UUID) ([]pkg.
 	}
 
 	return s.messageRepo.ListMessages(ctx, chatID)
+}
+
+func (s *ServiceImpl) DeleteChat(ctx context.Context, chatID uuid.UUID) error {
+	return s.chatRepo.DeleteChat(ctx, chatID)
 }

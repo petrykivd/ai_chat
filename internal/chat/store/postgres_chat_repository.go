@@ -45,3 +45,7 @@ func (r *PostgresChatRepository) ListChats(ctx context.Context) ([]pkg.Chat, err
 	}
 	return chats, nil
 }
+
+func (r *PostgresChatRepository) DeleteChat(ctx context.Context, id uuid.UUID) error {
+	return r.db.WithContext(ctx).Delete(&pkg.Chat{}, "id = ?", id).Error
+}
